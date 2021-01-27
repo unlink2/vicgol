@@ -103,10 +103,10 @@ fn readCell() {
 getCell: {
     readCell();
     cmp #DEAD;
-    bne alive;
+    bne dead;
         lda #0;
         rts;
-    alive:
+    dead:
         lda #1;
         rts;
 }
@@ -119,13 +119,13 @@ flipCell: {
     readCell();
 
     cmp #DEAD;
-    bne alive;
+    bne dead;
 
-        lda #DEAD;
+        lda #ALIVE;
         sta (srcPtr), y;
         rts;
-    alive:
-        lda #ALIVE;
+    dead:
+        lda #DEAD;
         sta (srcPtr), y;
         rts;
 }
