@@ -18,6 +18,34 @@ processInputs: {
         sta runtimeFlags;
     }
     noExit:
+    // test S
+    testInput(0b11111101, 0b00100000);
+    bne noDown; {
+        inc cursorY;
+    }
+    noDown:
+
+    // test d
+    testInput(0b11111011, 0b00000100);
+    bne noRight; {
+        inc cursorX;
+    }
+    noRight:
+
+    // test w
+    testInput(0b11111101, 0b00000010);
+    bne noUp; {
+        dec cursorY;
+    }
+    noUp:
+
+    // test a
+    testInput(0b11111101, 0b00000100);
+    bne noLeft; {
+        dec cursorX;
+    }
+    noLeft:
+
     rts;
 }
 

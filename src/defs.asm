@@ -25,17 +25,22 @@ let ALIVE = 0x66;
 // built-in kernal routine
 let SCREENPOSRESET = 0xE566;
 
+// sprite
+let SPRITEENABLE = 0xD015;
+let cursorX = 0xD000;
+let cursorY = 0xD001;
+
 // zero page
 bss 0xFB {
     srcPtr 2,
     destPtr 2,
     // 7th bit -> exit
+    // 6th bit -> pause game
+    // 5th bit -> Raster IRQ was recently called -> game can advance to next tick
     runtimeFlags 1
 }
 
 bss 0x2A7 {
-    cursorX 1,
-    cursorY 1
 }
 
 

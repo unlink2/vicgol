@@ -9,24 +9,40 @@ db 0x0c, 0x08, 0x00, 0x00, BAS_SYS; // 10 sys
 db "2062", 0x00, 0x00, 0x00; // the actual address in petscii
 
 init: {
-    sei; // no more interrupts
+    jsr init_irq;
+
     lda #00;
     sta runtimeFlags;
     sta cursorX;
     sta cursorY;
     jsr init_screen;
     jsr clear_screen;
+    lda #01;
+    sta SPRITEENABLE;
 
     // run until exit flag is set
-
 mainLoop:
     strcpy(hello_string, SCREEN_BANK);
-    // test flip
-    ldx #39;
-    ldy #24;
-    jsr flipCell;
 
     jsr processInputs;
+
+    jsr update;
+
+    lda runtimeFlags;
+    and #0b01000000;
+    // skip if paused
+    bne isPaused;
+        jsr updateGame;
+    isPaused:
+
+    // wait until frame flag is set
+    waitLoop:
+        lda runtimeFlags;
+        and #0b00100000;
+        beq waitLoop;
+    lda runtimeFlags;
+    and #0b11011111;
+    sta runtimeFlags;
 
     lda runtimeFlags;
     and #0b10000000;
@@ -35,12 +51,13 @@ mainLoop:
     // exit
     jsr clear_screen;
     jsr reset_screen;
-    cli; // enable interrupts again
     rts; // back to basic
 }
 
 include "input.asm"
 include "screen.asm"
+include "gameloop.asm"
+include "timing.asm"
 
 hello_string:
 defstrScreenCodeC64("(Q)UIT (P)AUSE (R)ESUME (F)LIP"); db 0;
