@@ -30,7 +30,7 @@ let SPRITEENABLE = 0xD015;
 let cursorSpriteX = 0xD000;
 let cursorSpriteY = 0xD001;
 let cursorSpriteXBitMask = 0b10000000;
-let cursorSpritePatternPtr = 0x07F8;
+let cursorSpritePatternPtr = SCREEN_BANK+1016;
 
 // frames
 let DEFAULT_CURSOR_DELAY = 6;

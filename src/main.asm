@@ -11,11 +11,6 @@ db "2062", 0x00, 0x00, 0x00; // the actual address in petscii
 init: {
     jsr init_irq;
 
-    lda #lo(cursorSpritePattern);
-    sta cursorSpritePatternPtr;
-    lda #hi(cursorSpritePattern);
-    sta cursorSpritePatternPtr+1;
-
     lda #00;
     sta runtimeFlags;
     sta cursorMoveDelay;
@@ -27,10 +22,11 @@ init: {
     lda #01;
     sta SPRITEENABLE;
 
+    lda #cursorSpritePattern / 64;
+    sta cursorSpritePatternPtr;
+
     // run until exit flag is set
 mainLoop:
-    strcpy(hello_string, SCREEN_BANK);
-
     jsr processInputs;
 
 
@@ -38,8 +34,12 @@ mainLoop:
     and #0b01000000;
     // skip if paused
     bne isPaused;
+        strcpy(hello_string, SCREEN_BANK);
         jsr updateGame;
+        jmp updateDone;
     isPaused:
+        strcpy(paused_string, SCREEN_BANK);
+    updateDone:
 
     // wait until frame flag is set
     waitLoop:
@@ -66,4 +66,6 @@ include "gameloop.asm"
 include "timing.asm"
 
 hello_string:
-defstrScreenCodeC64("(Q)UIT (P)AUSE/UNPAUSE (F)LIP"); db 0;
+defstrScreenCodeC64("(Q)UIT (P)AUSE   (F)LIP"); db 0;
+paused_string:
+defstrScreenCodeC64("(Q)UIT UN(P)AUSE (F)LIP"); db 0;
