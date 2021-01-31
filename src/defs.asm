@@ -27,8 +27,14 @@ let SCREENPOSRESET = 0xE566;
 
 // sprite
 let SPRITEENABLE = 0xD015;
-let cursorX = 0xD000;
-let cursorY = 0xD001;
+let cursorSpriteX = 0xD000;
+let cursorSpriteY = 0xD001;
+let cursorSpriteXBitMask = 0b10000000;
+let cursorSpritePatternPtr = 0x07F8;
+
+// frames
+let DEFAULT_CURSOR_DELAY = 6;
+let DEFAULT_FLIP_DELAY = 10;
 
 // zero page
 bss 0xFB {
@@ -41,6 +47,11 @@ bss 0xFB {
 }
 
 bss 0x2A7 {
+    cursorX 1,
+    cursorY 1,
+    // frames of delay
+    cursorMoveDelay 1,
+    flipDelay 1
 }
 
 

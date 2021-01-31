@@ -11,8 +11,15 @@ db "2062", 0x00, 0x00, 0x00; // the actual address in petscii
 init: {
     jsr init_irq;
 
+    lda #lo(cursorSpritePattern);
+    sta cursorSpritePatternPtr;
+    lda #hi(cursorSpritePattern);
+    sta cursorSpritePatternPtr+1;
+
     lda #00;
     sta runtimeFlags;
+    sta cursorMoveDelay;
+    sta flipDelay;
     sta cursorX;
     sta cursorY;
     jsr init_screen;
@@ -60,4 +67,4 @@ include "gameloop.asm"
 include "timing.asm"
 
 hello_string:
-defstrScreenCodeC64("(Q)UIT (P)AUSE (R)ESUME (F)LIP"); db 0;
+defstrScreenCodeC64("(Q)UIT (P)AUSE/UNPAUSE (F)LIP"); db 0;

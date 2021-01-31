@@ -103,11 +103,11 @@ fn readCell() {
 getCell: {
     readCell();
     cmp #DEAD;
-    bne dead;
-        lda #0;
+    beq dead;
+        lda #1;
         rts;
     dead:
-        lda #1;
+        lda #0;
         rts;
 }
 
@@ -115,9 +115,12 @@ getCell: {
 // inputs:
 //  x -> x position
 //  y -> y position
+//  a -> if a == FF flip current content, otherwise flip to content of A
 flipCell: {
-    readCell();
+    cmp #0xFF;
+    bne writeConst;
 
+    readCell();
     cmp #DEAD;
     bne dead;
 
@@ -128,4 +131,18 @@ flipCell: {
         lda #DEAD;
         sta (srcPtr), y;
         rts;
+
+    writeConst:
+        pha;
+        readCell();
+        pla;
+        sta (srcPtr), y;
+        rts;
+}
+
+// sprite for cursor
+align 64, 0;
+cursorSpritePattern:
+for (let i = 0; i < 64; i = i + 1) {
+    db 255;
 }

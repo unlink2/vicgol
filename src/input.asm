@@ -18,10 +18,16 @@ processInputs: {
         sta runtimeFlags;
     }
     noExit:
+
+    lda cursorMoveDelay;
+    bne skipCursorMove;
+
     // test S
     testInput(0b11111101, 0b00100000);
     bne noDown; {
         inc cursorY;
+        lda #DEFAULT_CURSOR_DELAY;
+        sta cursorMoveDelay;
     }
     noDown:
 
@@ -29,6 +35,8 @@ processInputs: {
     testInput(0b11111011, 0b00000100);
     bne noRight; {
         inc cursorX;
+        lda #DEFAULT_CURSOR_DELAY;
+        sta cursorMoveDelay;
     }
     noRight:
 
@@ -36,6 +44,8 @@ processInputs: {
     testInput(0b11111101, 0b00000010);
     bne noUp; {
         dec cursorY;
+        lda #DEFAULT_CURSOR_DELAY;
+        sta cursorMoveDelay;
     }
     noUp:
 
@@ -43,8 +53,40 @@ processInputs: {
     testInput(0b11111101, 0b00000100);
     bne noLeft; {
         dec cursorX;
+        lda #DEFAULT_CURSOR_DELAY;
+        sta cursorMoveDelay;
     }
     noLeft:
+
+    skipCursorMove:
+
+    lda flipDelay;
+    bne skipAction;
+    // test f
+    testInput(0b11111011, 0b00100000);
+    bne noFlip; {
+        ldx cursorX;
+        ldy cursorY;
+        lda #0xFF;
+        jsr flipCell;
+        lda #DEFAULT_FLIP_DELAY;
+        sta flipDelay;
+    }
+    noFlip:
+
+    // test p
+    testInput(0b11011111, 0b00000010);
+    bne noPause; {
+        lda runtimeFlags;
+        eor #0b01000000;
+        sta runtimeFlags; // flip pause flag
+        lda #DEFAULT_FLIP_DELAY;
+        sta flipDelay;
+    }
+    noPause:
+
+    skipAction:
+
 
     rts;
 }

@@ -25,3 +25,4 @@ fn strcpy(src, dest) {
     sta destPtr+1;
     jsr gol_strcpy;
 }
+

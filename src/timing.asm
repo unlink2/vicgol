@@ -27,6 +27,8 @@ init_irq: {
 }
 
 irq: {
+    pha;
+
     // set wait flag
     // we can advance to next tick
     lda runtimeFlags;
@@ -34,5 +36,16 @@ irq: {
     sta runtimeFlags;
     asl 0xD019;
 
+    lda cursorMoveDelay;
+    beq skipDecCursorMove;
+        dec cursorMoveDelay;
+    skipDecCursorMove:
+
+    lda flipDelay;
+    beq skipDecFlip;
+        dec flipDelay;
+    skipDecFlip:
+
+    pla;
     jmp 0xEA31; // basic irq
 }
