@@ -33,7 +33,6 @@ mainLoop:
 
     jsr processInputs;
 
-    jsr update;
 
     lda runtimeFlags;
     and #0b01000000;

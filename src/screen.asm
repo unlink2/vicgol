@@ -94,6 +94,17 @@ fn readCell() {
     lda (srcPtr), y;
 }
 
+fn getCellUnrolled() {
+    readCell();
+    cmp #DEAD;
+    beq dead;
+        lda #1;
+        bne done;
+    dead:
+        lda #0;
+    done:
+}
+
 // gets the state of a cell
 // inputs:
 //  x -> x location
@@ -101,14 +112,8 @@ fn readCell() {
 // returns:
 //  a -> 0/1
 getCell: {
-    readCell();
-    cmp #DEAD;
-    beq dead;
-        lda #1;
-        rts;
-    dead:
-        lda #0;
-        rts;
+    getCellUnrolled();
+    rts;
 }
 
 // flips the state of a cell from

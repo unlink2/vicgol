@@ -28,7 +28,12 @@ init_irq: {
 
 irq: {
     pha;
+    txa;
+    pha;
+    tya;
+    pha;
 
+    jsr update;
     // set wait flag
     // we can advance to next tick
     lda runtimeFlags;
@@ -46,6 +51,10 @@ irq: {
         dec flipDelay;
     skipDecFlip:
 
+    pla;
+    tay;
+    pla;
+    tax;
     pla;
     jmp 0xEA31; // basic irq
 }

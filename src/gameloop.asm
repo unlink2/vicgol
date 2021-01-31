@@ -69,7 +69,7 @@ applyRule: {
 
     // left
     dex;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -78,7 +78,7 @@ applyRule: {
     ldx ruleTempX;
     ldy ruleTempY;
     inx;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -87,7 +87,7 @@ applyRule: {
     ldx ruleTempX;
     ldy ruleTempY;
     dey;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -96,7 +96,7 @@ applyRule: {
     ldx ruleTempX;
     ldy ruleTempY;
     iny;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -106,7 +106,7 @@ applyRule: {
     ldy ruleTempY;
     inx;
     dey;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -116,7 +116,7 @@ applyRule: {
     ldy ruleTempY;
     dex;
     dey;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -126,7 +126,7 @@ applyRule: {
     ldy ruleTempY;
     inx;
     iny;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
@@ -136,14 +136,14 @@ applyRule: {
     ldy ruleTempY;
     dex;
     iny;
-    jsr getCell;
+    getCellUnrolled();
     clc;
     adc ruleTempCount;
     sta ruleTempCount;
 
     ldx ruleTempX;
     ldy ruleTempY;
-    jsr getCell;
+    getCellUnrolled();
     beq deadRules;
 
     aliveRules: {
@@ -195,11 +195,11 @@ updateGame: {
             xLoop:
                 jsr applyRule;
                 inx;
-                cpx #20;
+                cpx #30;
                 bne xLoop;
 
             iny;
-            cpy #15;
+            cpy #20;
             bne yLoop;
 
 
